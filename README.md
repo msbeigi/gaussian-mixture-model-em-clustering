@@ -1,3 +1,5 @@
+[![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange?logo=jupyter)](https://jupyter.org/)
+
 # Gaussian Mixture Model (GMM) with Expectation-Maximization (EM)
 
 This repository contains Python code for Gaussian Mixture Model (GMM) clustering using the Expectation-Maximization (EM) algorithm.
@@ -13,3 +15,97 @@ Python 3.x
 NumPy
 SciPy
 Matplotlib
+```
+
+
+## Implementation Guide:
+## 1. `plot_gaussian(mu, cov, color)`
+
+#### Task: plots ellipses 
+- **Input:**
+  - `mu`: Mean of the Gaussian distribution.
+  - `cov`: Covariance matrix of the Gaussian distribution.
+  - `color`: Color of the ellipse to be plotted.
+
+- **Functionality:**
+  - Calculates eigenvalues and eigenvectors of the covariance matrix.
+  - Creates an Ellipse object using `matplotlib.patches.Ellipse` based on the mean, eigenvalues, and eigenvectors.
+  - Returns the Ellipse object.
+
+## 2. `gmm_em(X, K, n_iter=100)`
+
+#### Task: generates Gaussian Mixture Model (GMM) components for the input data based on the K initiation
+- **Input:**
+  - `X`: Data matrix.
+  - `K`: Number of Gaussian components.
+  - `n_iter`: Number of iterations.
+
+- **Functionality:**
+  - Initializes weights, means, and covariance matrices.
+  - Alternates between the E-step and M-step for a specified number of iterations.
+  - Returns the final weights, means, covariance matrices, posterior probability matrix, labels, and likelihoods.
+
+## 3. `gmm_e_step(X, means, devi, weights)`
+
+#### Task: computes the posterior probabilities for each data point belonging to each component
+- **Input:**
+  - `X`: Data matrix.
+  - `means`: List of means for each Gaussian component.
+  - `devi`: List of covariance matrices for each Gaussian component.
+  - `weights`: List of weights for each Gaussian component.
+
+- **Functionality:**
+  - Computes the posterior probabilities (responsibilities) for each data point belonging to each Gaussian component.
+  - Scales the probability distribution for each point based on the initiated mean and covariance matrix.
+  - Normalizes the posterior probabilities.
+  - Assigns labels to data points based on the highest responsibility.
+  - Returns the posterior probabilities and labels.
+
+## 4. `gmm_m_step(X, posteriors)`
+
+#### Task: updates the weights, means, and covariances based on the computed posterior probabilities
+- **Input:**
+  - `X`: Data matrix.
+  - `posteriors`: Posterior probability matrix.
+
+- **Functionality:**
+  - Computes the mean, weight, and covariance matrix for each Gaussian component.
+  - Updates the mean with the sum of the likelihood to belong to the k-th Gaussian component.
+  - Calculates the centered data.
+  - Updates the covariance matrix.
+  - Returns the updated weight, mean, covariance matrix, and centered data.
+ 
+## 5. Visualization
+
+- **Data Plotting:**
+  - Creates a scatter plot of the data points.
+  ```
+  fig, ax = plt.subplots()
+  ax.scatter(X[:, 0], X[:, 1], s=10, alpha=0.5)
+  
+  ```  
+- **GMM Plotting:**
+  - Plots the Gaussian components as ellipses using the `plot_gaussian` function.
+  ```
+  colors = ['red', 'blue', 'green']
+  for i in range(K):
+      ell=plot_gaussian(mu[i], sigma[i], colors[i])
+      ax.add_artist(ell)
+  ax.set_title(' K=3 ')
+  ax.set_xlabel('X1')
+  ax.set_ylabel('X2')
+  plt.show()
+
+  ```
+## Covariance:
+ - the code implements the Expectation-Maximization (EM) algorithm for Gaussian Mixture Models (GMMs) and visualizes the result by plotting the data points and Gaussian components. The covariance matrices play a key role in modeling the shape of each Gaussian component.
+- **Definition:**
+  - Covariance is a measure of how much two variables change together. It is a statistical measure of the degree to which changes in one variable correspond to changes in another.
+
+- **Usage in GMM:**
+  - In the context of GMM, the covariance matrix defines the shape and orientation of the Gaussian distribution in each component. It captures how features co-vary with each other, providing information about the shape and orientation of the clusters.
+
+- **Significance:**
+  - Covariance helps in understanding the relationships between different dimensions of the data. It's crucial for capturing the geometry of the data distribution and plays a vital role in clustering and classification tasks.
+
+
